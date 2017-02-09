@@ -16,11 +16,13 @@
       "polyfills": "polyfills.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.json",
-      "prefix": "app",
+      "prefix": "hdi",
       "styles": [
         "styles.scss"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/bootstrap/dist/js/bootstrap.js"
+      ],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
