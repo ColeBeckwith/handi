@@ -1,10 +1,10 @@
-import { ClientPage } from './app.po';
+import { HandiPage } from './app.po';
 
-describe('client App', function() {
-  let page: ClientPage;
+describe('handi App', function() {
+  let page: HandiPage;
 
   beforeEach(() => {
-    page = new ClientPage();
+    page = new HandiPage();
   });
 
   it('should display message saying app works', () => {
