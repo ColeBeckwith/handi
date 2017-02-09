@@ -1,0 +1,16 @@
+<div class="full-screen full-screen--centered">
+    <div class="hdi-pane hdi-pane--medium hdi-pane--rounded text-center">
+        <h3>Welcome to Gidit</h3>
+
+        <gid-login-form *ngIf="loginOrRegister === 'Login'"></gid-login-form>
+        <gid-registration-form *ngIf="loginOrRegister === 'Register'"></gid-registration-form>
+
+        <a *ngIf="loginOrRegister === 'Register'" href="javascript:void(0)" (click)="openLogin()">
+            Already have an account?
+        </a>
+
+        <a *ngIf="loginOrRegister === 'Login'" href="javascript:void(0)" (click)="openRegister()">
+            Create account
+        </a>
+    </div>
+</div>

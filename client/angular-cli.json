@@ -16,11 +16,12 @@
       "polyfills": "polyfills.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.json",
-      "prefix": "hdi",
+      "prefix": "gid",
       "styles": [
         "styles.scss"
       ],
       "scripts": [
+        "../node_modules/jquery/dist/jquery.js",
         "../node_modules/bootstrap/dist/js/bootstrap.js"
       ],
       "environments": {

@@ -1,0 +1,28 @@
+<form novalidate
+      class="form-inline"
+      (ngSubmit)="submitForm(loginForm)"
+      [formGroup]="loginForm">
+    <div class="row vertical-buffer vertical-center">
+        <label class="col-sm-5 right-align-text">E-mail:</label>
+        <input class="form-control col-sm-7"
+               [ngClass]="{'input-error' : emailError}"
+               type="text"
+               (blur)="validateEmail(loginForm.controls.email)"
+               formControlName="email"/>
+    </div>
+
+    <div class="row small-text" *ngIf="emailError"><span class="text-danger">{{ emailError }}</span></div>
+
+    <div class="row vertical-buffer vertical-center">
+        <label class="col-sm-5 right-align-text">Password:</label>
+        <input class="form-control col-sm-7"
+               [ngClass]="{'input-error' : passwordError}"
+               type="password"
+               formControlName="password"/>
+    </div>
+
+    <div class="row" *ngIf="passwordError"><span class="text-danger">{{ passwordError }}</span></div>
+
+    <button type="submit" class="btn btn-primary vertical-buffer">Login</button>
+
+</form>

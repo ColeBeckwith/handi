@@ -1,0 +1,59 @@
+<form novalidate
+      class="form-inline"
+      (ngSubmit)="register(registrationForm)"
+      [formGroup]="registrationForm">
+    <div class="row vertical-buffer vertical-center">
+        <label class="col-sm-5 right-align-text">E-mail:</label>
+        <input class="form-control col-sm-7"
+               [ngClass]="{'input-error' : emailError}"
+               type="text"
+               (blur)="validateEmail(registrationForm.controls.email)"
+               formControlName="email"/>
+    </div>
+
+    <div class="row small-text" *ngIf="emailError"><span class="text-danger">{{ emailError }}</span></div>
+
+    <div class="row vertical-buffer vertical-center">
+        <label class="col-sm-5 right-align-text">Password:</label>
+        <input class="form-control col-sm-7"
+               [ngClass]="{'input-error' : passwordError}"
+               type="password"
+               (blur)="validatePassword(registrationForm.controls.password)"
+               formControlName="password"/>
+    </div>
+
+    <div class="row small-text" *ngIf="passwordError"><span class="text-danger">{{ passwordError }}</span></div>
+
+    <div class="row vertical-buffer vertical-center">
+        <label class="col-sm-5 right-align-text">Confirm Password:</label>
+        <input class="form-control col-sm-7"
+               [ngClass]="{'input-error' : confirmPasswordError}"
+               type="password"
+               (blur)="validatePasswordConfirmation(registrationForm.controls.password, registrationForm.controls.confirmPassword)"
+               formControlName="confirmPassword"/>
+    </div>
+
+    <div class="row small-text" *ngIf="confirmPasswordError"><span class="text-danger">{{ confirmPasswordError }}</span></div>
+
+    <div class="row vertical-buffer vertical-center">
+        <label class="col-sm-5 right-align-text">First Name:</label>
+        <input class="form-control col-sm-7"
+               [ngClass]="{'input-error' : firstNameError}"
+               type="text"
+               (blur)="validateFirstName(registrationForm.controls.firstName)"
+               formControlName="firstName"/>
+    </div>
+
+    <div class="row small-text" *ngIf="firstNameError"><span class="text-danger">{{ firstNameError }}</span></div>
+
+    <div class="row vertical-buffer vertical-center">
+        <label class="col-sm-5 right-align-text">Last Name:</label>
+        <input class="form-control col-sm-7"
+               type="text"
+               placeholder="Not Required"
+               formControlName="lastName"/>
+    </div>
+
+    <button type="submit" class="btn btn-info vertical-buffer">Register</button>
+
+</form>

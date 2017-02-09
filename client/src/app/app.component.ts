@@ -16,22 +16,22 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit() {
-    this.getAllPeople();
+    // this.getAllPeople();
   }
 
   addPerson(name, age) {
     this.http.post(`${this.API}/users`, {name, age})
       .subscribe(() => {
-        this.getAllPeople();
+        // this.getAllPeople();
       })
   }
 
   // Get all users from the API
-  getAllPeople() {
-    this.http.get(`${this.API}/users`)
-      .subscribe((people) => {
-        console.log(people);
-        this.people = people.json();
-      })
-  }
+  // getAllPeople() {
+  //   this.http.get(`${this.API}/users`)
+  //     .subscribe((people) => {
+  //       console.log(people);
+  //       this.people = people.json();
+  //     })
+  // }
 }

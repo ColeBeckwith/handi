@@ -1,2 +1,53 @@
+@import '../lib/variables';
+
+.full-screen {
+  height: 100vh;
+  width: 100vw;
+}
+
+.full-screen--centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hdi-pane {
+  background-color: $gray-light;
+  padding: 1em;
+}
+
+.hdi-pane--medium {
+  width: 35em;
+  // height: 20em;
+}
+
+.hdi-pane--rounded {
+  border-radius: .5em;
+}
+
+.vertical-center {
+  display: flex;
+  align-items: center;
+}
+
+.vertical-buffer {
+  margin: .2em 0;
+}
+
+.right-align-text {
+  text-align: right;
+}
 
 
+.form-control {
+  height: 1.8em;
+  padding: 0 8px;
+}
+
+.input-error {
+  border: 1px solid $brand-danger;
+}
+
+.small-text {
+  font-size: 75%;
+}
