@@ -1,5 +1,7 @@
 For Development:
 
+Run npm install from both the /client and /server directories.
+
 From the root directory run:
 
 $ docker run -d --name mongodb -p 27017:27017 mongo
