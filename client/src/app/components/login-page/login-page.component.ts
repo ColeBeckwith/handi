@@ -12,6 +12,7 @@ export class LoginPageComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.loginOrRegister = 'Login';
     }
 
     openLogin() {
@@ -20,15 +21,6 @@ export class LoginPageComponent implements OnInit {
 
     openRegister() {
         this.loginOrRegister = 'Register';
-    }
-
-    checkValidRegistration(form) {
-        this.wipeErrors();
-        if (form.contrls.password.value.length < 5) {
-            this.passwordError = 'Passwords must be at least 5 characters long.';
-        } else if (form.controls.password.value !== form.controls.confirmPassword.value) {
-            this.confirmPasswordError = 'Passwords do not match';
-        }
     }
 
 }

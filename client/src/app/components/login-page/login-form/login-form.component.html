@@ -1,6 +1,6 @@
 <form novalidate
       class="form-inline"
-      (ngSubmit)="submitForm(loginForm)"
+      (ngSubmit)="logIn(loginForm)"
       [formGroup]="loginForm">
     <div class="row vertical-buffer vertical-center">
         <label class="col-sm-5 right-align-text">E-mail:</label>
@@ -21,8 +21,8 @@
                formControlName="password"/>
     </div>
 
-    <div class="row" *ngIf="passwordError"><span class="text-danger">{{ passwordError }}</span></div>
+    <div class="row small-text" *ngIf="passwordError"><span class="text-danger">{{ passwordError }}</span></div>
 
-    <button type="submit" class="btn btn-primary vertical-buffer">Login</button>
+    <button type="button" class="btn btn-success vertical-buffer" (click)="logIn(loginForm)">Login</button>
 
 </form>

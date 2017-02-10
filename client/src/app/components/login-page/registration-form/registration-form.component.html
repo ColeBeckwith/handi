@@ -54,6 +54,8 @@
                formControlName="lastName"/>
     </div>
 
-    <button type="submit" class="btn btn-info vertical-buffer">Register</button>
+    <button type="button" class="btn btn-info vertical-buffer" (click)="register(registrationForm)">Register</button>
+
+    <div class="row" *ngIf="generalError"><span class="text-danger">{{ generalError }}</span></div>
 
 </form>

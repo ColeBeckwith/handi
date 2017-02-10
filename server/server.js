@@ -16,11 +16,14 @@ app.use(function(req, res, next) {
 
 require('./models/Users');
 
+require('./config/secret');
+require('./config/passport');
+
 const api = require('./routes/api');
 const usersApi = require('./routes/users');
 
-app.use('/', api);
-app.use('/users', usersApi);
+app.use('/api', api);
+app.use('/api/users', usersApi);
 
 const port = process.env.PORT || '3000';
 app.set('port', port);

@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormGroup, Validators, FormControl} from "@angular/forms";
+import {LoginService} from "../../login-service/login.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'gid-login-form',
@@ -10,8 +12,10 @@ export class LoginFormComponent implements OnInit {
     loginForm: FormGroup;
     emailError: String;
     passwordError: String;
+    generalError: String;
 
-    constructor() {
+    constructor(private loginService: LoginService,
+                private router : Router) {
     }
 
     ngOnInit() {
@@ -27,8 +31,31 @@ export class LoginFormComponent implements OnInit {
         this.passwordError = null;
     }
 
-    login(form) {
+    logIn(form) {
+        this.wipeErrors();
+        this.validateEmail(form.controls.email);
+        if (!form.controls.password.value) {
+            this.passwordError = 'Please enter a password.'
+        }
+        if (!this.emailError && !this.passwordError) {
+            this.loginService.logIn({
+                email: form.controls.email.value,
+                password: form.controls.password.value
+            }).then((resp) => {
+                this.router.navigate(['/home']);
+            }, (reject) => {
+                this.generalError = reject;
+            });
+        }
+    }
 
+    validateEmail(email) {
+        this.emailError = null;
+        if (email.errors && email.errors.required) {
+            this.emailError = 'Email is required';
+        } else if (!/.+@.+\..+/.test(email.value)) {
+            this.emailError = 'Please enter a valid e-mail';
+        }
     }
 
 }

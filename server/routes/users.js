@@ -4,6 +4,12 @@ const mongoose = require('mongoose');
 
 const User = mongoose.model('User');
 
+const jwt = require('express-jwt');
+
+const auth = jwt({secret: process.env.SECRET, userProperty: 'payload'});
+
+const passport = require('passport');
+
 router.get('/', (req, res) => {
 	User.find({}, (err, users) => {
 		if (err) {
@@ -31,27 +37,44 @@ router.get('/:id', (req, res) => {
 	})
 });
 
+router.post('/login', (req, res, next) => {
+    if (!req.body.email || !req.body.password) {
+        return res.status(400).json({message: 'Please fill out all fields.'})
+    }
 
-router.post('/', (req, res) => {
-	let user = new User({
-		age: req.body.age,
-		name: req.body.name
-		// username: req.body.username,
-		// firstName: req.body.firstName,
-		// lastName: req.body.lastName,
-		// email: req.body.email,
-		// password: req.body.password
-	});
+    passport.authenticate('local', (err, user, info) => {
+       if (err) { return next(err) }
 
-	user.save((error) => {
-		if (error) {
-			res.status(500).send(error);
-		} else {
-			res.status(201).json({
-				message: 'User created successfully.'
-			});
-		}
-	})
+       if (user) {
+           console.log('found user');
+           return res.json({token: user.generateJWT() });
+       } else {
+           return res.status(401).json(info);
+       }
+    })(req, res, next);
+
+});
+
+router.post('/register', (req, res, next) => {
+   if (!req.body.email || !req.body.password || !req.body.firstName) {
+       return res.status(400).json({message: 'Please fill out all fields'});
+   }
+
+   User.findOne({email: req.body.email}, (err, user) => {
+      if (user) {
+          return res.status(400).json({message: 'An account is already registered with that e-mail.'});
+      }
+   });
+
+   let user = new User();
+   user.email = req.body.email;
+   user.firstName = req.body.firstName;
+   user.setPassword(req.body.password);
+   user.save(function (err) {
+       if (err) { return next(err) }
+
+       return res.json({token: user.generateJWT() })
+   })
 });
 
 module.exports = router;

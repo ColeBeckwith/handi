@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormControl, Validators} from "@angular/forms";
+import {LoginService} from "../../login-service/login.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'gid-registration-form',
@@ -12,8 +14,10 @@ export class RegistrationFormComponent implements OnInit {
     passwordError: String;
     confirmPasswordError: String;
     firstNameError: String;
+    generalError: String;
 
-    constructor() {
+    constructor(private loginService : LoginService,
+                private router : Router) {
     }
 
     ngOnInit() {
@@ -36,14 +40,22 @@ export class RegistrationFormComponent implements OnInit {
 
     register(form) {
         if (this.validateRegistration(form)) {
-            console.log('Now register');
+            this.loginService.registerUser({
+                email: form.controls.email.value,
+                password: form.controls.password.value,
+                firstName: form.controls.firstName.value
+            }).then((resp) => {
+                this.router.navigate(['/home']);
+            }, (reject) => {
+                this.generalError = reject;
+            });
         }
     }
 
     validateRegistration(form) {
         this.validateEmail(form.controls.email);
         this.validatePassword(form.controls.password, form.controls.confirmPassword);
-        this.validateFirstName(form.controlls.name);
+        this.validateFirstName(form.controls.firstName);
         return !this.emailError && !this.passwordError && !this.confirmPasswordError && !this.firstNameError;
     }
 
@@ -69,6 +81,9 @@ export class RegistrationFormComponent implements OnInit {
     }
 
     validatePasswordConfirmation(formPassword, formConfirmation) {
+        if (!formConfirmation) {
+            return;
+        }
         this.confirmPasswordError = null;
         if (formPassword.value !== formConfirmation.value) {
             this.confirmPasswordError = 'Passwords do not match';
