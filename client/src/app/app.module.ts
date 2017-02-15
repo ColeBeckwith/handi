@@ -10,6 +10,7 @@ import {LoginPageComponent} from './components/login-page/login-page.component';
 import {LoginFormComponent} from './components/login-page/login-form/login-form.component';
 import {RegistrationFormComponent} from './components/login-page/registration-form/registration-form.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import { HomePageComponent } from './components/home-page/home-page.component';
         LoginPageComponent,
         LoginFormComponent,
         RegistrationFormComponent,
-        HomePageComponent
+        HomePageComponent,
+        NavbarComponent
     ],
     imports: [
         BrowserModule,

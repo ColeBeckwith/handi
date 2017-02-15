@@ -1,0 +1,15 @@
+<div class="gid-navbar">
+    <div class="container-fluid">
+        <div class="row">
+            <span class="col-sm-4">Gidit</span>
+            <button class="btn btn-info col-sm-4"
+                    (click)="goToProfile()">
+                {{ loginService.userInfo.firstName }}{{ loginService.userInfo.lastName }}
+            </button>
+            <button class="btn btn-info col-sm-4"
+                    (click)="logOut()">
+                Logout
+            </button>
+        </div>
+    </div>
+</div>
