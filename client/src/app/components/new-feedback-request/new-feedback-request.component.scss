@@ -1,0 +1,13 @@
+@import './src/mixins';
+
+.new-feedback-request-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.new-feedback-request-card {
+  @include gid-card();
+  width: 80%;
+  padding: 0 30px 20px;
+}

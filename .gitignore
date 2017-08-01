@@ -49,3 +49,7 @@ fabric.properties
 
 node_modules
 
+script-storage/*
+
+# !script-stoage/.gitkeep
+

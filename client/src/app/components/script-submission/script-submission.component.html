@@ -1,0 +1,64 @@
+<gid-navbar></gid-navbar>
+
+
+<div class="script-submission-card" *ngIf="script">
+    <h3 class="text-center">Submit Script</h3>
+    <form class="script-submission-form">
+        <div class="form-group">
+            <label>Script Title:</label>
+            <input type="text"
+                   name="scriptName"
+                   [(ngModel)]="script.name"
+                   class="form-control"/>
+        </div>
+
+        <div class="form-group">
+            <label>Logline:</label>
+            <textarea name="logline"
+                      [(ngModel)]="script.logline"
+                      class="form-control">
+            </textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Genre:</label>
+            <select class="form-control"
+                    name="genre"
+                    [(ngModel)]="script.genre">
+                <option>Horror</option>
+                <option>Thriller</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Subgenre:</label>
+            <select class="form-control"
+                    name="subgenre"
+                    [(ngModel)]="script.subgenre">
+                <option>Horror</option>
+                <option>Thriller</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Upload:</label>
+            <input type="file" (change)="fileChange($event)" accept=".pdf"/>
+        </div>
+
+        <p class="text-center text-danger"
+           *ngFor="let error of errors">{{ error }}</p>
+
+        <div class="text-center">
+            <button class="btn btn-danger"
+                    (click)="cancelSubmission()">
+                Cancel
+            </button>
+
+            <button class="btn btn-success"
+                    (click)="submitScript()">
+                Submit
+            </button>
+        </div>
+
+    </form>
+</div>

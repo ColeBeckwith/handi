@@ -3,11 +3,12 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 
 let UserSchema = new mongoose.Schema({
-    email: {type: String, lowercase: true},
+    email: {type: String, lowercase: true, unique: true},
 	firstName: String,
 	lastName: String,
 	hash: String,
-    salt: String
+    salt: String,
+    availableCredits: Number
 });
 
 UserSchema.methods.setPassword = function(password) {
@@ -16,7 +17,7 @@ UserSchema.methods.setPassword = function(password) {
 };
 
 UserSchema.methods.validPassword = function(password) {
-    return this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 128, 'sha256').toString('hex');
+    return this.hash === crypto.pbkdf2Sync(password, this.salt, 10000, 128, 'sha256').toString('hex');
 };
 
 UserSchema.methods.generateJWT = function() {
@@ -29,6 +30,14 @@ UserSchema.methods.generateJWT = function() {
         email: this.email,
         exp: parseInt(exp.getTime() / 1000)
     }, process.env.SECRET)
+};
+
+UserSchema.methods.getName = function() {
+    let name = this.firstName;
+    if (this.lastName) {
+        name += ' ' + this.lastName;
+    }
+    return name;
 };
 
 mongoose.model('User', UserSchema);

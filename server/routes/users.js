@@ -10,28 +10,14 @@ const auth = jwt({secret: process.env.SECRET, userProperty: 'payload'});
 
 const passport = require('passport');
 
-router.get('/', (req, res) => {
-	User.find({}, (err, users) => {
+router.get('/user-by-id/:id', (req, res) => {
+	User.findById(req.params.id, (err, user) => {
 		if (err) {
-			res.status(500).send(error);
-		} else {
-			res.status(200).json(users);
-		}
-	})
-});
-
-router.delete('/all', (req, res) => {
-	User.find({}).remove().exec().then(function(resp) {
-		res.json(resp);
-	})
-});
-
-
-router.get('/:id', (req, res) => {
-	User.findById(req.param.id, (err, user) => {
-		if (err) {
-			res.status(500).send(error);
-		} else {
+            res.status(500).send(error);
+        } else {
+		    delete user.salt;
+		    delete user.hash;
+		    delete user.email;
 			res.status(200).json(user)
 		}
 	})
@@ -46,8 +32,7 @@ router.post('/login', (req, res, next) => {
        if (err) { return next(err) }
 
        if (user) {
-           console.log('found user');
-           return res.json({token: user.generateJWT() });
+           return res.json({token: user.generateJWT()});
        } else {
            return res.status(401).json(info);
        }
@@ -70,10 +55,11 @@ router.post('/register', (req, res, next) => {
    user.email = req.body.email;
    user.firstName = req.body.firstName;
    user.setPassword(req.body.password);
+   user.availableCredits = 5;
    user.save(function (err) {
        if (err) { return next(err) }
 
-       return res.json({token: user.generateJWT() })
+       return res.json({token: user.generateJWT()})
    })
 });
 

@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {LoginService} from "../login-service/login.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'gid-login-page',
@@ -8,10 +10,13 @@ import {Component, OnInit} from '@angular/core';
 export class LoginPageComponent implements OnInit {
     loginOrRegister: String;
 
-    constructor() {
+    constructor(private loginService: LoginService, private router: Router) {
     }
 
     ngOnInit() {
+        if (this.loginService.isLoggedIn()) {
+            this.router.navigate(['/home']);
+        }
         this.loginOrRegister = 'Login';
     }
 

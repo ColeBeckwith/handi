@@ -1,0 +1,22 @@
+@import './src/mixins';
+
+:host {
+  display: block;
+}
+
+.profile-page-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
+.scripts-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-card {
+  width: 80%;
+  @include gid-card();
+}

@@ -1,0 +1,73 @@
+<gid-navbar></gid-navbar>
+
+<div class="new-feedback-request-container">
+    <div class="new-feedback-request-card">
+        <h3 class="text-center">Feedback Request</h3>
+
+        <form>
+            <div class="form-group">
+                <label>Script:</label>
+                <select class="form-control"
+                        name="feedbackRequestScriptId"
+                        [(ngModel)]="feedbackRequest.scriptId">
+                    <option *ngFor="let script of scripts"
+                            name="scriptId"
+                            [value]="script._id">
+                        {{ script.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Credits Offered:</label>
+                <input [(ngModel)]="feedbackRequest.creditsOffered"
+                       type="number"
+                       class="form-control"
+                       name="creditsOffered" />
+            </div>
+
+            <div class="form-group">
+                <label>Max Reviews:</label>
+                <input [(ngModel)]="feedbackRequest.maxReviews"
+                       type="number"
+                       class="form-control"
+                       name="maxReviews" />
+            </div>
+
+            <div class="form-group">
+                <label>Days Allowed:</label>
+                <span class="small-text">(Note: This is the number of days from when a reviewer selects the script.)</span>
+                <input [(ngModel)]="feedbackRequest.daysAllowed"
+                       type="number"
+                       class="form-control"
+                       name="daysAllowed" />
+            </div>
+
+            <div class="form-group">
+                <label>Minimum Reviewer Rating:</label>
+                <select [(ngModel)]="feedbackRequest.minimumReviewerRating"
+                        class="form-control"
+                        name="minimumReviewerRating">
+                    <option [value]="0">0</option>
+                    <option [value]="1">1</option>
+                    <option [value]="2">2</option>
+                    <option [value]="3">3</option>
+                    <option [value]="4">4</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label [ngClass]="{'text-danger': feedbackRequest.creditsOffered * feedbackRequest.maxReviews > loginService.userInfo.availableCredits}">
+                    Credits Required: {{ feedbackRequest.creditsOffered * feedbackRequest.maxReviews }} &nbsp;|&nbsp; Credits Available: {{ loginService.userInfo.availableCredits }}
+                </label>
+            </div>
+
+        </form>
+        <div class="horizontal-center">
+            <button class="btn btn-success"
+                    (click)="submitFeedbackRequest()">
+                Submit
+            </button>
+        </div>
+    </div>
+</div>

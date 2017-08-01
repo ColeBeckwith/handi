@@ -1,0 +1,8 @@
+<div class="script-block">
+    <h4>
+      {{ script.name }}
+    </h4>
+    <p class="script-logline" *ngIf="script.logline">
+        {{ script.logline | slice:0:250 }}<span *ngIf="script.logline.length > 250">...</span>
+    </p>
+</div>

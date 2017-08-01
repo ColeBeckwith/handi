@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {LoginService} from "../login-service/login.service";
-import {IUser} from "../../interfaces/iuser";
+import {User} from "../../interfaces/user";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'gid-navbar',
@@ -8,7 +9,7 @@ import {IUser} from "../../interfaces/iuser";
     styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-    constructor(public loginService: LoginService) {
+    constructor(public loginService: LoginService, private router: Router) {
     }
 
     ngOnInit() {
@@ -19,7 +20,11 @@ export class NavbarComponent implements OnInit {
     }
 
     goToProfile() {
+        this.router.navigate(['my-profile']);
+    }
 
+    goHome() {
+        this.router.navigate(['home']);
     }
 
 }

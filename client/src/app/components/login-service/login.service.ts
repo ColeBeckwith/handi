@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Http} from "@angular/http";
 import {Router} from "@angular/router";
-import {IUser} from "../../interfaces/iuser";
+import {User} from "../../interfaces/user";
 
 @Injectable()
 export class LoginService {
-    userInfo: IUser;
+    userInfo: User;
 
     constructor(private http: Http,
                 private router : Router) {
@@ -21,7 +21,7 @@ export class LoginService {
 
     authorizeUser() {
         if (!this.isLoggedIn()) {
-            this.router.navigate(['/login'])
+            this.router.navigate(['/login']);
         }
     }
 
@@ -81,13 +81,21 @@ export class LoginService {
     }
 
     getUserInfoFromServer() {
-        if (this.isLoggedIn()) {
-            const token = this.getToken();
-            const payload = JSON.parse(window.atob(token.split('.')[1]));
-            this.http.get('/api/users/userById/' + payload._id).subscribe((data : any) => {
-                this.userInfo = JSON.parse(data._body);
-            })
-        }
+        return new Promise<any> ((resolve, reject) => {
+            if (this.isLoggedIn()) {
+                const token = this.getToken();
+                const payload = JSON.parse(window.atob(token.split('.')[1]));
+                this.http.get('/api/users/user-by-id/' + payload._id).subscribe((data : any) => {
+                    this.userInfo = JSON.parse(data._body);
+                    resolve(data);
+                }, (err) => {
+                    reject('Error in Retrieving User Info.');
+                })
+            } else {
+                reject('User is not logged in.');
+            }
+        });
+
     }
 
 }

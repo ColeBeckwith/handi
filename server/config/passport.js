@@ -11,7 +11,7 @@ passport.use(new LocalStrategy({
         User.findOne({ email: username.toLowerCase() }, function (err, user) {
             if (err) {return done(err); }
             if (!user) {
-                return done(null, false, {message: 'Incorrect email.'});
+                return done(null, false, {message: 'Email not found.'});
             }
             if (!user.validPassword(password)) {
                 return done(null, false, {message: 'Incorrect password.' });

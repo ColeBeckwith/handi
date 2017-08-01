@@ -29,6 +29,7 @@ export class LoginFormComponent implements OnInit {
     wipeErrors() {
         this.emailError = null;
         this.passwordError = null;
+        this.generalError = null;
     }
 
     logIn(form) {

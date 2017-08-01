@@ -22,6 +22,7 @@
     </div>
 
     <div class="row small-text" *ngIf="passwordError"><span class="text-danger">{{ passwordError }}</span></div>
+    <div class="row small-text" *ngIf="generalError"><span class="text-danger">{{ generalError }}</span></div>
 
     <button type="button" class="btn btn-success vertical-buffer" (click)="logIn(loginForm)">Login</button>
 

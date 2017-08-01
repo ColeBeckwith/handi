@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
+import {HttpModule, RequestOptions, XHRBackend, Http} from '@angular/http';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from "./app-routing-module";
@@ -11,6 +11,20 @@ import {LoginFormComponent} from './components/login-page/login-form/login-form.
 import {RegistrationFormComponent} from './components/login-page/registration-form/registration-form.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import {GidHttpService} from "./components/gid-api/gid-http.service";
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ScriptsDisplayComponent } from './components/scripts-display/scripts-display.component';
+import { DashboardActionsComponent } from './components/dashboard-actions/dashboard-actions.component';
+import { ScriptSubmissionComponent } from './components/script-submission/script-submission.component';
+import { MyProfileComponent } from './components/my-profile/my-profile.component';
+import {AuthGuard} from "./components/login-service/auth-guard";
+import {ScriptsService} from "./components/scripts-service/scripts.service";
+import { SingleScriptDisplayComponent } from './components/single-script-display/single-script-display.component';
+import { ScriptDetailsComponent } from './components/script-details/script-details.component';
+import {FeedbackService} from "./components/feedback-service/feedback.service";
+import { NewFeedbackRequestComponent } from './components/new-feedback-request/new-feedback-request.component';
+import { OrderByPropertyPipe } from './pipes/order-by-property.pipe';
+import { SuggestedScriptsDisplayComponent } from './components/suggested-scripts-display/suggested-scripts-display.component';
 
 @NgModule({
     declarations: [
@@ -19,7 +33,17 @@ import { NavbarComponent } from './components/navbar/navbar.component';
         LoginFormComponent,
         RegistrationFormComponent,
         HomePageComponent,
-        NavbarComponent
+        NavbarComponent,
+        DashboardComponent,
+        ScriptsDisplayComponent,
+        DashboardActionsComponent,
+        ScriptSubmissionComponent,
+        MyProfileComponent,
+        SingleScriptDisplayComponent,
+        ScriptDetailsComponent,
+        NewFeedbackRequestComponent,
+        OrderByPropertyPipe,
+        SuggestedScriptsDisplayComponent
     ],
     imports: [
         BrowserModule,
@@ -29,7 +53,11 @@ import { NavbarComponent } from './components/navbar/navbar.component';
         ReactiveFormsModule
     ],
     providers: [
-        LoginService
+        LoginService,
+        AuthGuard,
+        ScriptsService,
+        FeedbackService,
+        {provide: Http, useFactory: GidHttpService.newInstance, deps: [XHRBackend, RequestOptions]},
     ],
     bootstrap: [AppComponent]
 })
