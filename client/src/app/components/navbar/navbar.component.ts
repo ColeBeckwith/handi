@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
     }
 
     goToProfile() {
-        this.router.navigate(['my-profile']);
+        this.router.navigate(['user']);
     }
 
     goHome() {

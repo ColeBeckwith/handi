@@ -83,10 +83,20 @@ router.get('/', (req, res, next) => {
 router.get('/:scriptId', (req, res, next) => {
     Script.findById(req.params.scriptId, (err, script) => {
         if (err || !script) {
-            return res.status(400).json('Script Not Found');
+            return res.status(400).send('Script Not Found');
         }
 
         return res.status(200).json({script: script});
+    })
+});
+
+router.get('/for-user/:userId', (req, res, next) => {
+    Script.find({userId: req.params.userId}, (err, scripts) => {
+        if (err) {
+            return res.status(400).send('');
+        }
+
+        return res.status(200).json({scripts: scripts});
     })
 });
 

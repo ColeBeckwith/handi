@@ -1,3 +1,5 @@
+@import './src/mixins';
+
 :host {
   width: 100%;
   display: flex;
@@ -6,15 +8,12 @@
 }
 
 .script-block {
-  border: 1px solid gray;
-  border-radius: 5px;
-  width: 90%;
-  padding: 3px 10px;
+  @include gid-script-block();
   cursor: pointer;
   display: flex;
   flex-direction: column;
 
   &:hover {
-    background-color: #d0d0d0;
+    background-color: #eeeeee;
   }
 }

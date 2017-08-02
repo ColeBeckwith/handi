@@ -10,7 +10,11 @@ const creditsService = require('./credits-service');
 module.exports = {
     removeAllFeedbackDataForScript: removeAllFeedbackDataForScript,
     getSuggestedFeedbackRequests: getSuggestedFeedbackRequests,
-    buildDetailedFeedbackRequest: buildDetailedFeedbackRequest
+    buildDetailedFeedbackRequest: buildDetailedFeedbackRequest,
+    buildDetailedFeedback: buildDetailedFeedback,
+    checkFeedbackRequestEligibility: checkFeedbackRequestEligibility,
+    assignFeedbackRequestToUser: assignFeedbackRequestToUser,
+
 };
 
 function removeAllFeedbackDataForScript(script) {
@@ -42,24 +46,33 @@ function getSuggestedFeedbackRequests(user, startFrom, include, options) {
         let fitCounter = 0;
         let suggestedFeedbackRequests = [];
         FeedbackRequest.find({}, (err, feedbackRequests) => {
-            for (let feedbackRequest of feedbackRequests) {
-                if (feedbackRequest.userId.equals(user._id)) {
-                    continue;
-                }
-                if (feedbackRequest.maxReviews <= (feedbackRequest.outstandingReviews + feedbackRequest.finishedReviews)) {
-                    continue;
-                }
+            Feedback.find({giverId: user._id}, (err, feedbacks) => {
+                let alreadyCoveredIds = [];
+                feedbacks.forEach((feedback) => {
+                    alreadyCoveredIds.push(feedback.scriptId.toString());
+                });
+                for (let feedbackRequest of feedbackRequests) {
+                    if (feedbackRequest.userId.equals(user._id)) {
+                        continue;
+                    }
+                    if (feedbackRequest.maxReviews <= (feedbackRequest.outstandingReviews + feedbackRequest.finishedReviews)) {
+                        continue;
+                    }
+                    if (alreadyCoveredIds.indexOf(feedbackRequest.scriptId.toString()) !== -1) {
+                        continue;
+                    }
 
-                fitCounter++;
-                if (fitCounter > startFrom) {
-                    suggestedFeedbackRequests.push(feedbackRequest);
-                    if (suggestedFeedbackRequests.length >= include) {
-                        break;
+                    fitCounter++;
+                    if (fitCounter > startFrom) {
+                        suggestedFeedbackRequests.push(feedbackRequest);
+                        if (suggestedFeedbackRequests.length >= include) {
+                            break;
+                        }
                     }
                 }
-            }
 
-            resolve(suggestedFeedbackRequests);
+                resolve(suggestedFeedbackRequests);
+            });
         });
     });
 }
@@ -73,6 +86,96 @@ function buildDetailedFeedbackRequest(feedbackRequest) {
                 feedbackRequest.script = script;
                 resolve(feedbackRequest);
             });
+        });
+    });
+}
+
+function buildDetailedFeedback(feedback) {
+    return new Promise((resolve, reject) => {
+        feedback = feedback.toJSON();
+        Script.findById(feedback.scriptId, (err, script) => {
+            if (err) {
+                reject(err);
+            }
+            feedback.script = script;
+            resolve(feedback);
+        });
+    });
+}
+
+function checkFeedbackRequestEligibility(user, feedbackRequestId) {
+    return new Promise((resolve, reject) => {
+        FeedbackRequest.findById(feedbackRequestId, (err, feedbackRequest) => {
+            if (err || !feedbackRequest) {
+                reject('Feedback request no longer exists.');
+                return;
+            }
+
+            if (feedbackRequest.maxReviews <= (feedbackRequest.outstandingReviews + feedbackRequest.finishedReviews)) {
+                reject('Feedback request has already been fulfilled.');
+                return;
+            }
+
+            if (feedbackRequest.minimumReviewerRating >= user.reviewerRating) {
+                reject('Feedback request requires a higher reviewer rating.');
+                return;
+            }
+
+            Feedback.find({giverId: user._id}, (err, feedbacks) => {
+                let reviewedScriptIds = [];
+
+                feedbacks.forEach((feedback) => {
+                    reviewedScriptIds.push(feedback._id);
+                });
+
+                if (reviewedScriptIds.indexOf(feedbackRequest.scriptId) !== -1) {
+                    reject('User has already reviewed script');
+                    return;
+                }
+
+                resolve();
+            });
+        })
+
+    });
+}
+
+function assignFeedbackRequestToUser(user, feedbackRequestId) {
+    return new Promise((resolve, reject) => {
+        FeedbackRequest.findById(feedbackRequestId, (err, feedbackRequest) => {
+            if (err || !feedbackRequest) {
+                reject();
+                return;
+            }
+
+            feedbackRequest.outstandingReviews++;
+
+            feedbackRequest.save((err) => {
+                if (err) {
+                    reject();
+                    return;
+                }
+
+                let newFeedback = new Feedback();
+                newFeedback.feedbackRequestId = feedbackRequest._id;
+                newFeedback.scriptId = feedbackRequest.scriptId;
+                newFeedback.receiverId = feedbackRequest.userId;
+                newFeedback.giverId = user._id;
+                newFeedback.complete = false;
+                // Current time plus the number of days in milliseconds.
+                newFeedback.dueOn = new Date().getTime() + (feedbackRequest.daysAllowed * 86400000);
+                newFeedback.notes = '';
+
+                newFeedback.save((err) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+
+                    resolve();
+                })
+
+            })
         });
     });
 }

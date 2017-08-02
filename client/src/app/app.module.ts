@@ -16,7 +16,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ScriptsDisplayComponent } from './components/scripts-display/scripts-display.component';
 import { DashboardActionsComponent } from './components/dashboard-actions/dashboard-actions.component';
 import { ScriptSubmissionComponent } from './components/script-submission/script-submission.component';
-import { MyProfileComponent } from './components/my-profile/my-profile.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import {AuthGuard} from "./components/login-service/auth-guard";
 import {ScriptsService} from "./components/scripts-service/scripts.service";
 import { SingleScriptDisplayComponent } from './components/single-script-display/single-script-display.component';
@@ -25,6 +25,7 @@ import {FeedbackService} from "./components/feedback-service/feedback.service";
 import { NewFeedbackRequestComponent } from './components/new-feedback-request/new-feedback-request.component';
 import { OrderByPropertyPipe } from './pipes/order-by-property.pipe';
 import { SuggestedScriptsDisplayComponent } from './components/suggested-scripts-display/suggested-scripts-display.component';
+import {UsersService} from "./components/users-service/users.service";
 
 @NgModule({
     declarations: [
@@ -38,12 +39,12 @@ import { SuggestedScriptsDisplayComponent } from './components/suggested-scripts
         ScriptsDisplayComponent,
         DashboardActionsComponent,
         ScriptSubmissionComponent,
-        MyProfileComponent,
+        UserProfileComponent,
         SingleScriptDisplayComponent,
         ScriptDetailsComponent,
         NewFeedbackRequestComponent,
         OrderByPropertyPipe,
-        SuggestedScriptsDisplayComponent
+        SuggestedScriptsDisplayComponent,
     ],
     imports: [
         BrowserModule,
@@ -57,6 +58,7 @@ import { SuggestedScriptsDisplayComponent } from './components/suggested-scripts
         AuthGuard,
         ScriptsService,
         FeedbackService,
+        UsersService,
         {provide: Http, useFactory: GidHttpService.newInstance, deps: [XHRBackend, RequestOptions]},
     ],
     bootstrap: [AppComponent]

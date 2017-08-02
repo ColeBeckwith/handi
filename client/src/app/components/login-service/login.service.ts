@@ -66,10 +66,10 @@ export class LoginService {
         return new Promise((resolve, reject) => {
             this.http.post('/api/users/login', user).subscribe((data: any) => {
                 this.saveToken(JSON.parse(data._body).token);
-                this.getUserInfoFromServer();
+                this.getCurrentUserInfoFromServer();
                 resolve();
             }, (error) => {
-                console.log(error);
+                console.debug(error);
                 reject(JSON.parse(error._body).message);
             });
         });
@@ -80,7 +80,7 @@ export class LoginService {
         this.router.navigate(['/login']);
     }
 
-    getUserInfoFromServer() {
+    getCurrentUserInfoFromServer() {
         return new Promise<any> ((resolve, reject) => {
             if (this.isLoggedIn()) {
                 const token = this.getToken();

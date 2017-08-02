@@ -8,4 +8,5 @@ export class Script {
     url: string;
     author: User;
     _id: string;
+    userId: string;
 }

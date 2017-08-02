@@ -82,4 +82,20 @@ export class ScriptsService {
             });
         });
     }
+
+    getScriptsForUser(userId: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.http.get(`/api/scripts/for-user/${userId}`).subscribe((resp) => {
+                resolve(resp.json())
+            }, (err) => {
+                console.debug(err);
+                reject('Failed to get scripts');
+            });
+        })
+    }
+
+    viewScript(scriptId: string) {
+        // TODO fix for production.
+        window.open(`http://localhost:3000/script-storage/script${scriptId}.pdf`);
+    }
 }

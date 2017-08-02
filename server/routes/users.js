@@ -13,11 +13,13 @@ const passport = require('passport');
 router.get('/user-by-id/:id', (req, res) => {
 	User.findById(req.params.id, (err, user) => {
 		if (err) {
-            res.status(500).send(error);
+            return res.status(500).send(err);
         } else {
+		    user = user.toJSON();
 		    delete user.salt;
 		    delete user.hash;
 		    delete user.email;
+		    // TODO only show certain properties if its a user requesting info for another user.
 			res.status(200).json(user)
 		}
 	})
@@ -56,6 +58,7 @@ router.post('/register', (req, res, next) => {
    user.firstName = req.body.firstName;
    user.setPassword(req.body.password);
    user.availableCredits = 5;
+   user.reviewerRating = 3;
    user.save(function (err) {
        if (err) { return next(err) }
 

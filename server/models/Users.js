@@ -8,7 +8,8 @@ let UserSchema = new mongoose.Schema({
 	lastName: String,
 	hash: String,
     salt: String,
-    availableCredits: Number
+    availableCredits: Number,
+    reviewerRating: Number
 });
 
 UserSchema.methods.setPassword = function(password) {

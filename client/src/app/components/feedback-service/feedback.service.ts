@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {FeedbackRequest} from "../../interfaces/feedback-request";
 import {Http} from "@angular/http";
 import {Feedback} from "../../interfaces/feedback";
+import {User} from "../../interfaces/user";
 
 @Injectable()
 export class FeedbackService {
@@ -33,6 +34,24 @@ export class FeedbackService {
                 reject(err);
             })
         });
+    }
+
+    getOptimalFeedbackRequestForScript(scriptId: string, reviewingUser: User): Promise<FeedbackRequest> {
+        return new Promise((resolve, reject) => {
+            let optimalFeedbackRequest = null;
+            this.getAllRequestsForScript(scriptId).then((requests) => {
+                requests.forEach((request) => {
+                    if (request.untakenReviews > 0) {
+                        if (request.minimumReviewerRating <= reviewingUser.reviewerRating) {
+                            optimalFeedbackRequest = request;
+                        }
+                    }
+                });
+                resolve(optimalFeedbackRequest);
+            }, (err) => {
+                reject(err);
+            })
+        })
     }
 
     getAllFeedbackForScript(scriptId): Promise<Array<Feedback>> {
@@ -67,4 +86,44 @@ export class FeedbackService {
             })
         })
     }
+
+    acceptFeedbackRequest(feedbackRequest: FeedbackRequest): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.http.post(`/api/feedback-requests/accept`, feedbackRequest).subscribe((resp) => {
+                resolve();
+            }, (err) => {
+                console.debug(err);
+                reject(err);
+            })
+        });
+    }
+
+    getFeedbackForUser(userId): Promise<Array<Feedback>> {
+        return new Promise((resolve, reject) => {
+           this.http.get(`/api/feedback/by-user/${userId}`).subscribe((data) => {
+               let feedbacks = data.json().feedback;
+               const currentDate = new Date().getTime();
+               feedbacks.forEach((feedback) => {
+                   if (!feedback.complete) {
+
+                       let timeUntilDue = feedback.dueOn - currentDate;
+                       if (timeUntilDue <= 0) {
+                           feedback.timeUntilDue = 'Past Due';
+                       } else if (timeUntilDue <= 86400000) {
+                           feedback.timeUntilDue = (Math.floor(timeUntilDue / 3600000)) + ' Hours';
+                       } else {
+                           feedback.timeUntilDue = (Math.floor(timeUntilDue / 86400000)) + ' Days';
+                       }
+
+                   }
+               });
+               resolve(feedbacks);
+           }, (err) => {
+               console.debug(err);
+               reject(err);
+           });
+        });
+    }
+
+
 }

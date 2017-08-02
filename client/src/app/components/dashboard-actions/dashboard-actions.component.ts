@@ -17,4 +17,12 @@ export class DashboardActionsComponent implements OnInit {
       this.router.navigate(['script-submission']);
   }
 
+  goToMyTasks() {
+      this.router.navigate(['user/current/section/tasks']);
+  }
+
+  goToMyTables() {
+
+  }
+
 }

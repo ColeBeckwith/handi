@@ -64,6 +64,8 @@
 }
 
 .nav-tabs {
+  margin-left: 15px;
+
   li {
     a {
       border-top-left-radius: 5px;
@@ -82,4 +84,10 @@
     }
 
   }
+}
+
+.gid-tab-content {
+  padding: 12px;
+  border: 0 solid $gray-light;
+  border-top-width: 1px;
 }

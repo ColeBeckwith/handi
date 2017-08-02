@@ -14,6 +14,6 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.loginService.authorizeUser();
-        this.loginService.getUserInfoFromServer();
+        this.loginService.getCurrentUserInfoFromServer();
     }
 }

@@ -109,4 +109,17 @@ router.get('/suggested/start/:startFrom/include/:include/options/:options', (req
 });
 
 
+router.post(`/accept`, (req, res, next) => {
+    // Get the latest version.
+    feedbackService.checkFeedbackRequestEligibility(req.requestUser, req.body._id).then((resp) => {
+        feedbackService.assignFeedbackRequestToUser(req.requestUser, req.body._id).then((resp) => {
+            return res.status(200).json({status: 'OK'});
+        }, (err) => {
+            return res.status(400).send(err);
+        });
+    }, (err) => {
+        return res.status(400).send(err);
+    });
+});
+
 module.exports = router;

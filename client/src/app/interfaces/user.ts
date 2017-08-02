@@ -1,7 +1,8 @@
 export interface User {
-    id: string;
+    _id: string;
     email: string;
     firstName: string;
     lastName: string;
     availableCredits: number;
+    reviewerRating: number;
 }

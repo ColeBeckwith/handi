@@ -1,0 +1,77 @@
+<gid-navbar></gid-navbar>
+
+<div class="profile-page-container">
+    <div class="profile-card">
+        <h3 class="text-center">{{ title }}</h3>
+
+
+        <ul class="nav nav-tabs" [style.margin-left.px]="15">
+            <li [class.active]="activeSection === 'scripts'"
+                class="nav-tab">
+                <a href="#scripts" data-toggle="tab" aria-expanded="true">Scripts</a>
+            </li>
+            <li class="nav-tab"
+                [class.active]="activeSection === 'tasks'"
+                *ngIf="ownProfile">
+                <a href="#tasks" data-toggle="tab" aria-expanded="false">Tasks</a>
+            </li>
+        </ul>
+
+
+        <div class="tab-content gid-tab-content">
+
+            <div class="tab-pane fade"
+                 [class.active]="activeSection === 'scripts'"
+                 [class.in]="activeSection === 'scripts'"
+                 id="scripts">
+                <div class="scripts-container">
+
+                    <gid-single-script-display *ngFor="let script of userScripts"
+                                               (click)="selectScript(script)"
+                                               [script]="script">
+                    </gid-single-script-display>
+
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade"
+                 [class.active]="activeSection === 'tasks'"
+                 [class.in]="activeSection === 'tasks'"
+                 id="tasks">
+                <div>
+                    <h4 class="text-center">Outstanding Reviews</h4>
+
+                    <div class="scripts-container">
+                        <div *ngFor="let feedback of outstandingFeedback"
+                             class="feedback-block">
+                            <p>Script: {{ feedback.script.name }}
+                            <p>
+                            <p><a href="javascript: false;"
+                                  (click)="goToAuthorPage(feedback.receiverId)">
+                                Author Page
+                            </a></p>
+                            <p>Due In: {{ feedback.timeUntilDue }}</p>
+
+                            <div class="btn-group horizontal-center">
+                                <button class="btn btn-info"
+                                        (click)="viewScript(feedback.scriptId)">
+                                    View Script
+                                </button>
+                                <button class="btn btn-success"
+                                        (click)="submitFeedback(feedback)">
+                                    Submit Feedback
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+

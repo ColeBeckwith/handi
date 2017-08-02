@@ -1,5 +1,45 @@
 <div class="suggested-scripts-display-card">
-    <p>
-        scripts-display works!
-    </p>
+    <h3 class="text-center">Suggested Scripts</h3>
+
+    <div class="suggested-scripts-container">
+        <div class="row suggested-script-block container"
+             *ngFor="let feedbackRequest of suggestedFeedbackRequests">
+            <div class="row">
+                <div class="col-md-6 suggested-script-block__column">
+
+                    <div><span><b>Title:</b></span>
+                        <span>{{ feedbackRequest.script.name }}</span></div>
+
+                    <div><span><b>Author:</b></span>
+                        <span><a (click)="viewAuthorPage(feedbackRequest.userId)"
+                                 href="javascript: false;">{{ feedbackRequest.script.author }}</a></span></div>
+
+                    <div><span><b>Genre:</b></span>
+                        <span>{{ feedbackRequest.script.genre || 'N/A'}}</span></div>
+
+                    <div><span><b>Subgenre:</b></span>
+                        <span>{{ feedbackRequest.script.subgenre || 'N/A'}}</span></div>
+
+                </div>
+                <div class="col-md-6 suggested-script-block__column">
+
+                    <div><span><b>Credits Offered:</b></span>
+                        <span>{{ feedbackRequest.creditsOffered }}</span></div>
+
+                    <div><span><b>Days Allowed:</b></span>
+                        <span>{{ feedbackRequest.daysAllowed }}</span></div>
+
+
+                </div>
+            </div>
+            <p><b>Logline:</b> {{ feedbackRequest.script.logline }}</p>
+            <div class="btn-group horizontal-center">
+                <button class="btn btn-info"
+                        (click)="viewScriptDetails(feedbackRequest.scriptId)">Details</button>
+                <button class="btn btn-success"
+                        (click)="acceptFeedbackRequest(feedbackRequest)">Review</button>
+            </div>
+        </div>
+
+    </div>
 </div>

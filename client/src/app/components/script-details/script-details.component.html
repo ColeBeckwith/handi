@@ -3,13 +3,19 @@
 <div class="script-details-container">
     <div class="script-details-card" *ngIf="script">
         <h3 class="text-center">Script: {{ script.name }}</h3>
+        <h5 *ngIf="!userOwnsScript"
+            class="text-center">
+            <a (click)="goToUserPage()"
+               href="javascript: false;">Author Page</a>
+        </h5>
 
-        <ul class="nav nav-tabs" [style.margin-left.px]="15">
+        <ul class="nav nav-tabs">
             <li class="active nav-tab"><a href="#details" data-toggle="tab" aria-expanded="true">Details</a></li>
             <li class="nav-tab"><a href="#feedback" data-toggle="tab" aria-expanded="false">Feedback</a></li>
-            <li class="nav-tab"><a href="#feedback-requests" data-toggle="tab" aria-expanded="false">Feedback
+            <li class="nav-tab" *ngIf="userOwnsScript"><a href="#feedback-requests" data-toggle="tab" aria-expanded="false">Feedback
                 Requests</a></li>
-            <li class="disabled"><a href="javascript: false;">Analytics (Coming Soon)</a></li>
+            <li *ngIf="userOwnsScript"
+                class="disabled"><a href="javascript: false;">Analytics (Coming Soon)</a></li>
         </ul>
         <div id="myTabContent" class="tab-content gid-tab-content">
 
@@ -23,11 +29,19 @@
                             class="btn btn-success">View
                     </button>
                     <button type="button"
+                            class="btn btn-info"
+                            *ngIf="!userOwnsScript && optimalFeedbackRequest"
+                            (click)="addToTasks(script)">
+                        Review: {{ optimalFeedbackRequest.creditsOffered }} Credits
+                    </button>
+                    <button type="button"
+                            *ngIf="userOwnsScript"
                             (click)="triggerNewVersionUpload()"
                             class="btn btn-info">
                         Upload New Version
                     </button>
                     <button type="button"
+                            *ngIf="userOwnsScript"
                             (click)="deleteScript()"
                             class="btn btn-danger">
                         Delete Script
@@ -43,6 +57,7 @@
                     </h5>
                     <div class="horizontal-center">
                         <button class="btn btn-success"
+                                *ngIf="userOwnsScript"
                                 (click)="createFeedbackRequest()">
                             Get Feedback
                         </button>
@@ -80,9 +95,13 @@
                             </div>
                             <div class="col-md-4 feedback-request-display__column">
                                 <button class="btn btn-danger"
-                                        *ngIf="feedbackRequest.untakenReviews > 0"
+                                        *ngIf="feedbackRequest.untakenReviews > 0 && userOwnsScript"
                                         (click)="cancelFeedbackRequest(feedbackRequest)">
                                     Cancel
+                                </button>
+                                <button class="btn btn-success"
+                                        *ngIf="!userOwnsScript">
+                                    Review
                                 </button>
                             </div>
                         </div>
@@ -90,6 +109,7 @@
                 </div>
                 <div class="horizontal-center">
                     <button class="btn btn-success"
+                            *ngIf="userOwnsScript"
                             (click)="createFeedbackRequest()">
                         Create Feedback Request
                     </button>

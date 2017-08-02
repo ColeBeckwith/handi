@@ -7,7 +7,7 @@
 .profile-page-container {
   display: flex;
   justify-content: center;
-  margin: 20px;
+  padding: 20px;
 }
 
 .scripts-container {
@@ -17,6 +17,10 @@
 }
 
 .profile-card {
-  width: 80%;
   @include gid-card();
+  width: 80%;
+}
+
+.feedback-block {
+  @include gid-script-block();
 }

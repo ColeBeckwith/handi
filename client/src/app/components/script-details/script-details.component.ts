@@ -5,6 +5,7 @@ import {Script} from '../../interfaces/script';
 import {FeedbackService} from "../feedback-service/feedback.service";
 import {FeedbackRequest} from "../../interfaces/feedback-request";
 import {Feedback} from "../../interfaces/feedback";
+import {LoginService} from "../login-service/login.service";
 
 @Component({
     selector: 'gid-script-details',
@@ -15,37 +16,50 @@ export class ScriptDetailsComponent implements OnInit {
     script: Script;
     feedbackRequests: Array<FeedbackRequest>;
     feedback: Array<Feedback>;
+    userOwnsScript: boolean = false;
+    optimalFeedbackRequest: FeedbackRequest;
 
     constructor(private route: ActivatedRoute,
                 private scriptsService: ScriptsService,
                 private feedbackService: FeedbackService,
-                private router: Router) {
+                private router: Router,
+                private loginService: LoginService) {
     }
 
     ngOnInit() {
         this.route.params.subscribe((params: any) => {
             if (params.scriptId) {
-
                 // Get The Script
                 this.scriptsService.getScript(params.scriptId).then((resp) => {
                     this.script = resp;
+                    if (this.loginService.userInfo && this.loginService.userInfo._id === this.script.userId) {
+                        this.userOwnsScript = true;
+                    }
+
+                    // Get The Requests
+                    if (this.userOwnsScript) {
+                        this.feedbackService.getAllRequestsForScript(params.scriptId).then((resp) => {
+                            this.feedbackRequests = resp;
+                        }, (err) => {
+                            console.debug(err);
+                        });
+                    } else {
+                        this.feedbackService.getOptimalFeedbackRequestForScript(params.scriptId, this.loginService.userInfo).then((resp) => {
+                            this.optimalFeedbackRequest = resp;
+                        });
+                    }
+
+                    // Get The Feedback
+                    this.feedbackService.getAllFeedbackForScript(params.scriptId).then((resp) => {
+                        this.feedback = resp;
+                    }, (err) => {
+                        console.debug(err)
+                    });
                 }, (error) => {
                     console.debug(error);
                 });
 
-                // Get The Requests
-                this.feedbackService.getAllRequestsForScript(params.scriptId).then((resp) => {
-                    this.feedbackRequests = resp;
-                }, (err) => {
-                    console.debug(err);
-                });
 
-                // Get The Feedback
-                this.feedbackService.getAllFeedbackForScript(params.scriptId).then((resp) => {
-                    this.feedback = resp;
-                }, (err) => {
-                    console.debug(err)
-                });
             } else {
                 console.debug('Invalid Script id in Params.')
             }
@@ -54,8 +68,7 @@ export class ScriptDetailsComponent implements OnInit {
     }
 
     viewScript() {
-        // TODO fix for production.
-        window.open(`http://localhost:3000/script-storage/script${this.script._id}.pdf`);
+        this.scriptsService.viewScript(this.script._id);
     }
 
     createFeedbackRequest() {
@@ -93,6 +106,10 @@ export class ScriptDetailsComponent implements OnInit {
         }, (err) => {
             // Do nothing.
         });
+    }
+
+    goToUserPage() {
+        this.router.navigate([`user/${this.script.userId}`]);
     }
 
 

@@ -1,4 +1,7 @@
+import {Script} from './script';
+
 export interface Feedback {
+    _id: String,
     scriptId: String,
     receiverId: String,
     giverId: String,
@@ -6,5 +9,7 @@ export interface Feedback {
     dueOn: Number,
     notes: String,
     scriptRating: Number,
-    feedbackRating: Number
+    feedbackRating: Number,
+    script: Script,
+    timeUntilDue: String
 }
