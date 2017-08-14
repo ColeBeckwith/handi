@@ -70,8 +70,8 @@ export class FeedbackService {
             this.http.post(`/api/feedback-requests/add`, feedbackRequest).subscribe((resp) => {
                 resolve(resp.json());
             }, (err) => {
-               console.debug(err);
-               reject(err);
+                console.debug(err);
+                reject(err);
             });
         })
     }
@@ -100,28 +100,61 @@ export class FeedbackService {
 
     getFeedbackForUser(userId): Promise<Array<Feedback>> {
         return new Promise((resolve, reject) => {
-           this.http.get(`/api/feedback/by-user/${userId}`).subscribe((data) => {
-               let feedbacks = data.json().feedback;
-               const currentDate = new Date().getTime();
-               feedbacks.forEach((feedback) => {
-                   if (!feedback.complete) {
+            this.http.get(`/api/feedback/by-user/${userId}`).subscribe((data) => {
+                let feedbacks = data.json().feedback;
+                const currentDate = new Date().getTime();
+                feedbacks.forEach((feedback) => {
+                    if (!feedback.complete) {
 
-                       let timeUntilDue = feedback.dueOn - currentDate;
-                       if (timeUntilDue <= 0) {
-                           feedback.timeUntilDue = 'Past Due';
-                       } else if (timeUntilDue <= 86400000) {
-                           feedback.timeUntilDue = (Math.floor(timeUntilDue / 3600000)) + ' Hours';
-                       } else {
-                           feedback.timeUntilDue = (Math.floor(timeUntilDue / 86400000)) + ' Days';
-                       }
+                        let timeUntilDue = feedback.dueOn - currentDate;
+                        if (timeUntilDue <= 0) {
+                            feedback.timeUntilDue = 'Past Due';
+                        } else if (timeUntilDue <= 86400000) {
+                            feedback.timeUntilDue = (Math.floor(timeUntilDue / 3600000)) + ' Hours';
+                        } else {
+                            feedback.timeUntilDue = (Math.floor(timeUntilDue / 86400000)) + ' Days';
+                        }
 
-                   }
-               });
-               resolve(feedbacks);
-           }, (err) => {
-               console.debug(err);
-               reject(err);
-           });
+                    }
+                });
+                resolve(feedbacks);
+            }, (err) => {
+                console.debug(err);
+                reject(err);
+            });
+        });
+    }
+
+    getSingleFeedback(feedbackId): Promise<Feedback> {
+        return new Promise((resolve, reject) => {
+            this.http.get(`/api/feedback/${feedbackId}`).subscribe((data) => {
+                resolve(data.json().feedback);
+            }, (err) => {
+                console.debug(err);
+                reject(err);
+            })
+        });
+    }
+
+    saveFeedbackDraft(feedback: Feedback): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.http.put(`/api/feedback/${feedback._id}`, feedback).subscribe((data) => {
+                resolve(data);
+            }, (err) => {
+                console.debug(err);
+                reject(err);
+            })
+        });
+    }
+
+    submitFinalFeedback(feedback: Feedback): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.http.post(`/api/feedback/submit`, feedback).subscribe((data) => {
+                resolve(data.json());
+            }, (err) => {
+                console.debug(err);
+                reject(err);
+            });
         });
     }
 

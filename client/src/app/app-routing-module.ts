@@ -7,6 +7,7 @@ import {UserProfileComponent} from './components/user-profile/user-profile.compo
 import {AuthGuard} from "./components/login-service/auth-guard";
 import {ScriptDetailsComponent} from './components/script-details/script-details.component';
 import {NewFeedbackRequestComponent} from './components/new-feedback-request/new-feedback-request.component';
+import {FeedbackSubmissionComponent} from "./components/feedback-submission/feedback-submission.component"
 
 const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -19,7 +20,7 @@ const routes: Routes = [
     {path: 'new-feedback-request/:scriptId', component: NewFeedbackRequestComponent, canActivate: [AuthGuard]},
     {path: 'user/:userId', component: UserProfileComponent, canActivate: [AuthGuard]},
     {path: 'user/:userId/section/:section', component: UserProfileComponent, canActivate: [AuthGuard]},
-    // TODO feedback submission route.
+    {path: 'feedback-submission/:feedbackId', component: FeedbackSubmissionComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({

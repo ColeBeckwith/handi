@@ -14,7 +14,6 @@ module.exports = {
     buildDetailedFeedback: buildDetailedFeedback,
     checkFeedbackRequestEligibility: checkFeedbackRequestEligibility,
     assignFeedbackRequestToUser: assignFeedbackRequestToUser,
-
 };
 
 function removeAllFeedbackDataForScript(script) {

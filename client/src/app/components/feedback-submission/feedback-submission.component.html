@@ -1,0 +1,30 @@
+<gid-navbar></gid-navbar>
+
+<div class="feedback-submission-container">
+    <div *ngIf="feedback" class="feedback-submission-card">
+        <h3 class="text-center">Feedback Submission</h3>
+        <h4 class="text-center">Script: {{ feedback.script.name }}</h4>
+
+        <div class="horizontal-center">
+            <rating [(ngModel)]="feedback.scriptRating"
+                    [max]="5">
+
+            </rating>
+        </div>
+
+        <div class="form-group">
+            <label>Notes:</label>
+            <textarea class="form-control"
+                      rows="9"
+                      [(ngModel)]="feedback.notes">
+            </textarea>
+        </div>
+
+
+        <div class="horizontal-center">
+            <button class="btn btn-success" (click)="saveDraft()">Save Draft</button>
+            <button class="btn btn-warning" (click)="submitFinal()">Submit Final</button>
+        </div>
+    </div>
+</div>
+

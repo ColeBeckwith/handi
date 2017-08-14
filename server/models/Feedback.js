@@ -6,6 +6,7 @@ let FeedbackSchema = new mongoose.Schema({
     receiverId: mongoose.Schema.Types.ObjectId,
     giverId: mongoose.Schema.Types.ObjectId,
     completed: Boolean,
+    completedOn: Number,
     dueOn: Number,
     notes: String,
     scriptRating: Number,

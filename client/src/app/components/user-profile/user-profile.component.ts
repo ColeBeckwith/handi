@@ -81,7 +81,7 @@ export class UserProfileComponent implements OnInit {
     }
 
     submitFeedback(feedback: Feedback) {
-
+        this.router.navigate([`feedback-submission`, feedback._id]);
     }
 
     goToAuthorPage(userId) {

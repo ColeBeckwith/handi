@@ -26,6 +26,8 @@ import { NewFeedbackRequestComponent } from './components/new-feedback-request/n
 import { OrderByPropertyPipe } from './pipes/order-by-property.pipe';
 import { SuggestedScriptsDisplayComponent } from './components/suggested-scripts-display/suggested-scripts-display.component';
 import {UsersService} from "./components/users-service/users.service";
+import { FeedbackSubmissionComponent } from './components/feedback-submission/feedback-submission.component';
+import {RatingModule} from "ngx-rating";
 
 @NgModule({
     declarations: [
@@ -45,13 +47,15 @@ import {UsersService} from "./components/users-service/users.service";
         NewFeedbackRequestComponent,
         OrderByPropertyPipe,
         SuggestedScriptsDisplayComponent,
+        FeedbackSubmissionComponent,
     ],
     imports: [
         BrowserModule,
         FormsModule,
         HttpModule,
         AppRoutingModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        RatingModule
     ],
     providers: [
         LoginService,
